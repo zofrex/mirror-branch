@@ -10,4 +10,8 @@ const sha = context.sha;
 const branch = core.getInput('target-branch', {required: true});
 const force = (core.getInput('force') || 'false').toUpperCase() === 'TRUE'
 
-octokit.git.updateRef({owner: owner, repo: repo, ref: branch, sha: sha, force: force});
+octokit.git.updateRef({owner: owner, repo: repo, branch, sha: sha, force: force}).
+  catch(error => {
+    core.error(error);
+    core.setFailed(`Failed to update ref: ${error.message}`);
+  });
