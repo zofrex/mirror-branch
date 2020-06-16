@@ -1,0 +1,22 @@
+name: 'Mirror Branch'
+description: 'Mirror your new main branch to your old master branch (or mirror any branch A to any branch B)'
+inputs:
+  target-branch:
+    description: 'Branch to mirror to'
+    required: false
+    default: 'master'
+  token:
+    description: >
+      Token used to access the Github API. You can leave this as the default
+      and Github will automatically provision one for you for this action.
+    required: false
+    default: ${{ github.token }}
+  force:
+    description: >
+      Whether to force push when updating the target branch.
+      true = force push, false = don't force push.
+    required: false
+    default: 'true'
+runs:
+  using: 'mode12'
+  main: 'index.js'
