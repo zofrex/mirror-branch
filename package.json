@@ -1,0 +1,15 @@
+{
+  "name": "mirror-branch",
+  "version": "0.1.0",
+  "description": "Mirror your new main branch to your old master branch (or mirror any branch A to any branch B)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zofrex",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^3.0.0"
+  }
+}
