@@ -18,5 +18,5 @@ inputs:
     required: false
     default: 'true'
 runs:
-  using: 'mode12'
+  using: 'node12'
   main: 'index.js'
