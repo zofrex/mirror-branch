@@ -1,5 +1,8 @@
 name: 'Mirror Branch'
 description: 'Mirror your new main branch to your old master branch (or mirror any branch A to any branch B)'
+branding:
+  icon: 'git-branch'
+  color: 'orange'
 inputs:
   target-branch:
     description: 'Branch to mirror to'
