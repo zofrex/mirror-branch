@@ -1,0 +1,59 @@
+name: Testing
+
+on:
+  pull_request:
+  push:
+    branches: development
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout testing repo
+      uses: actions/checkout@v2
+      with:
+        repository: zofrex/mirror-branch-testing
+        ref: testing
+        token: ${{ secrets.ACCESS_TOKEN }}
+
+    - name: Set up Ruby environment
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.7'
+
+    - name: Update testing repo to use this version of this action
+      run: ./update.rb $GITHUB_SHA
+
+    - name: Write commit message
+      id: write-commit-message
+      run: echo "::set-output name=message::Test commit $GITHUB_SHA"
+
+    - name: Commit and push change to testing repo
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: ${{ steps.write-commit-message.outputs.message }}
+        branch: testing # make this explicit just to be certain
+
+    - name: Get commit hash for the above commit
+      id: get-commit
+      run: echo "::set-output name=created-commit::$(git rev-parse testing)"
+
+    - name: Wait for mirror job to run
+      run: sleep 30
+
+    - name: Fetch repo again
+      run: git fetch
+
+    - name: Assert that branch got mirrored to master
+      run: |
+        set -eux
+        found_revision=$(git rev-parse origin/master)
+        expected_revision="${{ steps.get-commit.outputs.created-commit }}"
+        if [ "$found_revision" != "$expected_revision" ]; then
+          echo "::error ::Master branch not updated with commit from testing branch!"
+          echo "::error ::Expected: $expected_revision"
+          echo "::error ::Got: $found_revision"
+          exit 1
+        else
+          echo "::debug ::Assertion passed"
+        fi
