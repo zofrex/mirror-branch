@@ -1,0 +1,39 @@
+name: Update node_modules if necessary
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+  push:
+    branches:
+      - development
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Set up NodeJS environment
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+
+    - name: npm install
+      run: npm install
+
+    - name: Commit and push node_modules if it changed
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Automatic commit: Update node_modules to reflect changes to package.json/package-lock.json"
+        file_pattern: node_modules
+        branch: ${{ github.event.pull_request.head.ref }}
+        commit_author: NPM Install Bot <41898282+github-actions[bot]@users.noreply.github.com>
