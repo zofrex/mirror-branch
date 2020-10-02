@@ -1,0 +1,26 @@
+name: Double-check that node_modules is up to date with package.json
+
+on:
+  pull_request:
+  push:
+    branches:
+      - development
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install jq
+      run: sudo apt-get install jq
+
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Set up NodeJS environment
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+
+    - name: Check that 'npm install' would make no changes
+      run: >
+        [[ "$(npm install --json --dry-run |jq -r '{added,removed,updated,moved,failed} | add | length')" == "0" ]]
