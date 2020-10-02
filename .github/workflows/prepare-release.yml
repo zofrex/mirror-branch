@@ -1,0 +1,31 @@
+name: Prepare release
+on:
+  workflow_dispatch:
+
+jobs:
+  bump-version:
+    name: "Bump version and tag"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: "Checkout repo"
+        uses: "actions/checkout@v2"
+
+      - name: Set up NodeJS environment
+        uses: "actions/setup-node@v1"
+        with:
+          node-version: 12
+
+      - name: "Bump version & tag"
+        uses: "phips28/gh-action-bump-version@v8.0.5"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: fetch
+        run: git fetch
+
+      - name: "Push major version tracking branch"
+        run: git push origin "$GITHUB_REF":"v$(< package.json jq -r .version | sed 's/\..*//')"
