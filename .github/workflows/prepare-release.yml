@@ -8,24 +8,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install jq
-        run: sudo apt-get install jq
-
       - name: "Checkout repo"
         uses: "actions/checkout@v2"
+        with:
+          fetch-depth: 0
 
       - name: Set up NodeJS environment
         uses: "actions/setup-node@v1"
         with:
           node-version: 12
 
+      - name: Set up Git environment
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
       - name: "Bump version & tag"
-        uses: "phips28/gh-action-bump-version@v8.0.5"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm version patch --message "Bump version to %s"
 
-      - name: fetch
-        run: git fetch
+      - name: Bump v1 branch
+        run: git branch -f v1 HEAD
 
-      - name: "Push major version tracking branch"
-        run: git push origin "$GITHUB_REF":"v$(< package.json jq -r .version | sed 's/\..*//')"
+      - name: Push branches
+        run: git push origin $GITHUB_REF v1
+
+      - name: Push tag
+        run: git push --tags
