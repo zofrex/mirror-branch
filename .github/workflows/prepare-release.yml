@@ -17,7 +17,7 @@ jobs:
       - name: Set up NodeJS environment
         uses: "actions/setup-node@v1"
         with:
-          node-version: 12
+          node-version: '18'
 
       - name: Set up Git environment
         run: |
