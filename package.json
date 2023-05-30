@@ -1,6 +1,6 @@
 {
   "name": "mirror-branch",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Mirror your new main branch to your old master branch (or mirror any branch A to any branch B)",
   "main": "index.js",
   "scripts": {
