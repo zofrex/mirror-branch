@@ -17,9 +17,9 @@ jobs:
         token: ${{ secrets.ACCESS_TOKEN }}
 
     - name: Set up Ruby environment
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '2.7'
+        ruby-version: '3.2'
 
     - name: Update testing repo to use this version of this action
       run: ./update.rb $GITHUB_SHA
