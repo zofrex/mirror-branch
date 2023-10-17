@@ -17,13 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         token: ${{ secrets.ACCESS_TOKEN }}
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Set up NodeJS environment
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '18'
 
@@ -31,7 +31,7 @@ jobs:
       run: npm install
 
     - name: Commit and push node_modules if it changed
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "Automatic commit: Update node_modules to reflect changes to package.json/package-lock.json"
         file_pattern: node_modules
