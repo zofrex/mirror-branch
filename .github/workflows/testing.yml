@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout testing repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: zofrex/mirror-branch-testing
         ref: testing
@@ -29,7 +29,7 @@ jobs:
       run: echo "message=Test commit $GITHUB_SHA" >> $GITHUB_OUTPUT
 
     - name: Commit and push change to testing repo
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: ${{ steps.write-commit-message.outputs.message }}
         branch: testing # make this explicit just to be certain

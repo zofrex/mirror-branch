@@ -20,7 +20,7 @@ Whether or not to force push. "true" means to force push, "false" means don't. D
 
 Mirror the `release-candidate` branch to the `master` branch:
 
-```
+```yml
 name: Mirror branch
 
 on:
@@ -36,7 +36,7 @@ jobs:
 
 Mirror the `release` branch to the `deployment` branch, but don't force push:
 
-```
+```yml
 name: Mirror branch
 
 on:
